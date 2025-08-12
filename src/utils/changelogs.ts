@@ -1,6 +1,24 @@
 export const changelogs = [
   // Add more from top
   {
+    date: '11/08/2025',
+    description: `
+        • Improve Tracker Editor. It's still suck to use, but hey it's better, I think.
+        `
+  },
+  {
+    date: '09/08/2025',
+    description: `
+        • Add Marcus, Vila and second Eternity euphorias.
+        `
+  },
+  {
+    date: '07/08/2025',
+    description: `
+        • Add Ezio Auditore banner.
+        `
+  },
+  {
     date: '19/07/2025',
     description: `
         • Add Charon as unreleased arcanist.
