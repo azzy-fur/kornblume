@@ -2,11 +2,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useWarehouseStore } from '../../stores/warehouseStore';
 import Popper from 'vue3-popper';
-import {
-    initializeWarehouse,
-    checkWarehouse,
-    sortWarehouseMaterials
-} from '../../composables/warehouse';
+import { setupWarehouse } from '../../composables/warehouse';
 import { useGlobalStore } from '../../stores/global';
 import WarehouseItem from './warehouse/WarehouseItem.vue';
 import EventShopButton from './warehouse/EventShopButton.vue';
@@ -20,7 +16,8 @@ const categories = [
     'Build Material',
     'Insight Material',
     'Resonate Material',
-    'Reveries Material'
+    'Reveries Material',
+    'Insight Casket'
 ];
 
 const activeCategories = ref([] as string[]);
@@ -48,16 +45,6 @@ const selectedCategories = (category: string) => {
     } else {
         activeCategories.value.push(category);
     }
-};
-
-const setupWarehouse = () => {
-    if (useWarehouseStore().data.length === 0) {
-        initializeWarehouse();
-    } else {
-        // else statement to be updated for seamless addition of new warehouse items
-        checkWarehouse();
-    }
-    sortWarehouseMaterials(useWarehouseStore().data);
 };
 
 const updateMaterialQuantity = (materialName: string, materialQuantity: number) => {
@@ -191,7 +178,7 @@ onMounted(() => {
                 <dialog ref="dialog" class="modal">
                     <div class="modal-box custom-gradient-gray-blue custom-border">
                         <p class="py-4 text-lg text-white text-center">
-                            <i18n-t keypath="reset-quantity-of-selected-categories">
+                            <i18n-t scope="global" keypath="reset-quantity-of-selected-categories">
                                 <template #highlight>
                                     <span class="text-error">{{ $t('selected') }}</span>
                                 </template>

@@ -32,6 +32,10 @@ const props = defineProps({
         type: Array as () => number[],
         required: true
     },
+    bannerType: {
+        type: String,
+        required: true
+    },
     text: {
         type: String,
         required: true
@@ -257,22 +261,29 @@ watch(isEditing, (newVal) => {
         </div>
     </div>
 
-    <TrackerEditor v-if="isEditing" :pulls="props.allPulls" />
+    <TrackerEditor v-if="isEditing" :pulls="props.allPulls" :banner-type="props.bannerType" />
     <div v-if="showSpinner" class="text-white text-center font-bold"><i class="fa-solid fa-spinner fa-spin"></i></div>
 
     <div v-if="!isEditing" class="flex flex-col overflow-x-auto hidden-scrollbar">
         <!-- Rarity select -->
         <div class="flex justify-center space-x-2 pb-4">
-            <button v-for="i in [2, 3, 4, 5, 6]" :key="i"
-                :class="{ 'border-2 border-info': activeRarities.includes(i) }" @click="selectedRarities(i)"
-                class="p-2 rounded-md">
+            <button
+                v-for="i in [2, 3, 4, 5, 6]"
+                :key="i"
+                :class="[
+                    'border-2',
+                    activeRarities.includes(i) ? 'border-info' : 'border-transparent'
+                ]"
+                @click="selectedRarities(i)"
+                class="p-2 rounded-md"
+            >
                 <i class="fa-solid fa-star" :class="{
-        'text-orange-300': i === 6,
-        'text-yellow-100': i === 5,
-        'text-purple-400': i === 4,
-        'text-sky-200': i === 3,
-        'text-green-200': i === 2
-    }"></i>
+                    'text-orange-300': i === 6,
+                    'text-yellow-100': i === 5,
+                    'text-purple-400': i === 4,
+                    'text-sky-200': i === 3,
+                    'text-green-200': i === 2
+                }"></i>
             </button>
         </div>
 
@@ -299,7 +310,7 @@ watch(isEditing, (newVal) => {
                     <td class="text-center px-4 whitespace-nowrap">{{ pull.PullNumber }}</td>
 
                     <!-- Arcanist -->
-                    <td class="flex items-center px-4 gap-x-3 whitespace-nowrap">
+                    <td class="flex items-center px-4 py-1 gap-x-3 whitespace-nowrap">
                         <ArcanistIcon v-if="arcanists.find(a => a.Name === pull.ArcanistName)"
                             :arcanist="arcanists.find(a => a.Name === pull.ArcanistName) as IArcanist" />
                         <SpecialIcon v-else :name="pull.ArcanistName" />

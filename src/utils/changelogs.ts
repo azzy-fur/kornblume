@@ -1,6 +1,75 @@
 export const changelogs = [
   // Add more from top
   {
+    date: '05/11/2025',
+    description: `
+        • Add Kaalaa Baunaa euphoria. Her fault for using kb as her abbreviation. <br>
+      `
+  },
+  {
+    date: '03/11/2025',
+    description: `
+        • Add Beryl as unreleased arcanist. Add Anjo Nala and Isolde euphorias. <br>
+        • Add 3.0 stages by SolidKalium.
+        `
+  },
+  {
+    date: '26/10/2025',
+    description: `
+        • Add Corvus as unreleased arcanist. <br>
+        • Add Sentinel and Charon banners. <br>
+        • Thanks for worrying about my health, but I'm totally fine lol, I simply forgor.
+        `
+  },
+  {
+    date: '03/10/2025',
+    description: `
+        • Improve layout for Arcanist page. <br>
+        • Improve Tracker Editor. <br>
+        • Improve Warehouse input usability. For example, you can now use k/m/b suffixes and scientific notation (e.g. 1e6) to input large numbers. <br>
+        • Various other improvements and bug fixes. <br>
+        • All by SolidKalium. 
+        `
+  },
+  {
+    date: '21/09/2025',
+    description: `
+        • Add A Knight and Argus euphorias.
+        `
+  },
+  {
+    date: '19/09/2025',
+    description: `
+        • Add Rubuska as unreleased arcanist. <br>
+        • Add 2.8 stages.
+        `
+  },
+  {
+    date: '18/09/2025',
+    description: `
+        • Add Nautika, Ulrich and Moldir as released arcanists.
+        `
+  },
+  {
+    date: '03/09/2025',
+    description: `
+        • Various UI/UX improvements, including mobile experience by SolidKalium. <br>
+        • Silksong tomorrow.
+        `
+  },
+  {
+    date: '28/08/2025',
+    description: `
+        • Add Kassandra and Alexios.
+        `
+  },
+  {
+    date: '14/08/2025',
+    description: `
+        • Add Insight Casket to Planner. There might be some bugs, if you encounter any, please report them.
+        `
+  },
+  {
     date: '11/08/2025',
     description: `
         • Improve Tracker Editor. It's still suck to use, but hey it's better, I think.

@@ -25,7 +25,7 @@ const arcanists = useDataStore().arcanists;
 const isError = ref(false);
 const wrongTimestamps = ref<number[]>([]);
 // const selectedBannerType = ref('Limited');
-const selectedBannerType = ref('A Prophet Guided by Time');
+const selectedBannerType = ref('The Myth at Her Fingertips');
 const pulls = ref<IPull[]>([]);
 const changelogsStore = useChangelogsStore();
 const tutorialButton = ref<HTMLButtonElement>(null!);
@@ -101,6 +101,8 @@ const lucyPulls = createPullsByBannerType('Thoughts in Cylinder');
 const anjoNalaPulls = createPullsByBannerType('Longing for Innocence');
 const liangPulls = createPullsByBannerType('Moonbeam Guardian');
 const ezioPulls = createPullsByBannerType('A Prophet Guided by Time');
+const kassandraPulls = createPullsByBannerType('Wine-Dark Reflections of the Eagle');
+const nautikaPulls = createPullsByBannerType('The Myth at Her Fingertips');
 
 const limitedPulls = computed(() => {
   const filteredPulls = sortedPulls.value.filter(
@@ -118,7 +120,9 @@ const limitedPulls = computed(() => {
       pull.BannerType !== 'Boon of the Water' &&
       pull.BannerType !== 'Golden Spindle' &&
       pull.BannerType !== 'Ripples on the Water' &&
-      pull.BannerType !== 'A Prophet Guided by Time'
+      pull.BannerType !== 'A Prophet Guided by Time' &&
+      pull.BannerType !== 'Wine-Dark Reflections of the Eagle' &&
+      pull.BannerType !== 'The Myth at Her Fingertips'
   );
   return filteredPulls.map((pull, index) => {
     return {
@@ -209,6 +213,10 @@ const ocr: clickHandler = (payload: Event): void => {
                     /The Mirror.*?Lonely Watcher/,
                     `The\\s*Mirror[\\s\\S]*?Lonely\\s*Watcher` // Handle The Mirror ... Lonely Watcher variations
                   ) // Handle The Mirror's ... Lonely Watcher variations
+                  .replace(
+                    /The Mourner's.*?Eulogy/,
+                    `The\\s*Mourner's[\\s\\S]*?Eulogy` // Handle The Mourner's ... Eulogy variations
+                  )
                   .replace(/\s/g, '\\s*') // Handle spaces
                   .replace(/['’"]/g, '[\'"’\\s]*') // Handle single/double quotes
             )
@@ -568,29 +576,31 @@ const selectBannerType = (bannerType: string) => {
       <!-- Limited Placeholder -->
       <button
         v-bind:class="{
-          'border-button': selectedBannerType === 'A Prophet Guided by Time'
+          'border-button': selectedBannerType === 'The Myth at Her Fingertips'
         }"
-        class="text-white py-1 px-3 hover:bg-info rounded-md"
-        @click="selectBannerType('A Prophet Guided by Time')">
-        {{ $t('ezio-auditore') }}
+        class="text-white py-1 px-3 hover:bg-info rounded-md border-2 border-transparent"
+        @click="selectBannerType('The Myth at Her Fingertips')">
+        {{ $t('nautika') }}
       </button>
 
       <button
         v-bind:class="{
           'border-button': selectedBannerType === 'Limited'
         }"
-        class="text-white py-1 px-3 hover:bg-info rounded-md"
+        class="text-white py-1 px-3 hover:bg-info rounded-md border-2 border-transparent"
         @click="selectBannerType('Limited')">
         {{ $t('limited') }}
       </button>
+
       <button
         v-bind:class="{
           'border-button': selectedBannerType === 'Standard'
         }"
-        class="text-white py-1 px-3 hover:bg-info rounded-md"
+        class="text-white py-1 px-3 hover:bg-info rounded-md border-2 border-transparent"
         @click="selectBannerType('Standard')">
         {{ $t('standard') }}
       </button>
+
       <div class="dropdown dropdown-bottom dropdown-end">
         <div tabindex="0" role="button">
           <button
@@ -608,155 +618,178 @@ const selectBannerType = (bannerType: string) => {
                 selectedBannerType === 'Thoughts in Cylinder' ||
                 selectedBannerType === 'Longing for Innocence' ||
                 selectedBannerType === 'Moonbeam Guardian' ||
-                selectedBannerType === 'A Prophet Guided by Time'
+                selectedBannerType === 'A Prophet Guided by Time' ||
+                selectedBannerType === 'Wine-Dark Reflections of the Eagle' ||
+                selectedBannerType === 'The Myth at Her Fingertips'
             }"
-            class="text-white py-1 px-3 hover:bg-info rounded-md">
+            class="text-white py-1 px-3 hover:bg-info rounded-md border-2 border-transparent">
             {{ $t('special') }}
           </button>
         </div>
         <!-- Special banners -->
         <ul
           tabindex="0"
-          class="dropdown-content z-[1] shadow bg-blue-950 custom-border-light rounded-box space-y-2 p-4 mt-2">
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Invitation From the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Invitation From the Water')">
-              {{ $t('thread') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Abundance of the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Abundance of the Water')">
-              {{ $t('abundance') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Yearning of the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Yearning of the Water')">
-              {{ $t('yearning') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Revelation of the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Revelation of the Water')">
-              {{ $t('revelation') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Promise of the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Promise of the Water')">
-              {{ $t('promise') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Boon of the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Boon of the Water')">
-              {{ $t('boon') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Golden Spindle'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Golden Spindle')">
-              {{ $t('golden-spindle') }}
-            </button>
-          </li>
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Ripples on the Water'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Ripples on the Water')">
-              {{ $t('ripples') }}
-            </button>
-          </li>
-
-          <!-- Line separator -->
-          <hr class="border-t border-gray-300 m-2" />
-
-          <!-- Jiu Niangzi banner -->
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Till the Last Drop'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Till the Last Drop')">
-              {{ $t('jiu-niangzi') }}
-            </button>
-          </li>
-          <!-- Lucy banner -->
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Thoughts in Cylinder'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Thoughts in Cylinder')">
-              {{ $t('lucy') }}
-            </button>
-          </li>
-          <!-- Anjo Nala banner -->
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Longing for Innocence'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Longing for Innocence')">
-              {{ $t('anjo-nala') }}
-            </button>
-          </li>
-          <!-- Liang Yue banner -->
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'Moonbeam Guardian'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('Moonbeam Guardian')">
-              {{ $t('liang-yue') }}
-            </button>
-          </li>
-          <!-- Ezio banner -->
-          <li>
-            <button
-              v-bind:class="{
-                'border-button': selectedBannerType === 'A Prophet Guided by Time'
-              }"
-              class="text-white py-1 px-3 hover:bg-info rounded-md"
-              @click="selectBannerType('A Prophet Guided by Time')">
-              {{ $t('ezio-auditore') }}
-            </button>
-          </li>
+          class="dropdown-content z-[1] shadow bg-blue-950 custom-border-light rounded-box p-4 mt-2"
+          style="min-width: 320px">
+          <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Invitation From the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Invitation From the Water')">
+                {{ $t('thread') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Abundance of the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Abundance of the Water')">
+                {{ $t('abundance') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Yearning of the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Yearning of the Water')">
+                {{ $t('yearning') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Revelation of the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Revelation of the Water')">
+                {{ $t('revelation') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Promise of the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Promise of the Water')">
+                {{ $t('promise') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Boon of the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Boon of the Water')">
+                {{ $t('boon') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Golden Spindle'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Golden Spindle')">
+                {{ $t('golden-spindle') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Ripples on the Water'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Ripples on the Water')">
+                {{ $t('ripples') }}
+              </button>
+            </li>
+            <!-- Line separator, full width -->
+            <div class="col-span-2"><hr class="border-t border-gray-300 my-2" /></div>
+            <!-- Jiu Niangzi banner -->
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Till the Last Drop'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Till the Last Drop')">
+                {{ $t('jiu-niangzi') }}
+              </button>
+            </li>
+            <!-- Lucy banner -->
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Thoughts in Cylinder'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Thoughts in Cylinder')">
+                {{ $t('lucy') }}
+              </button>
+            </li>
+            <!-- Anjo Nala banner -->
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Longing for Innocence'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Longing for Innocence')">
+                {{ $t('anjo-nala') }}
+              </button>
+            </li>
+            <!-- Liang Yue banner -->
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Moonbeam Guardian'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Moonbeam Guardian')">
+                {{ $t('liang-yue') }}
+              </button>
+            </li>
+            <!-- Ezio banner -->
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'A Prophet Guided by Time'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('A Prophet Guided by Time')">
+                {{ $t('ezio-auditore') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'Wine-Dark Reflections of the Eagle'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('Wine-Dark Reflections of the Eagle')">
+                {{ $t('kassandra') }}
+              </button>
+            </li>
+            <li>
+              <button
+                v-bind:class="{
+                  'border-button': selectedBannerType === 'The Myth at Her Fingertips'
+                }"
+                class="text-white py-1 px-3 hover:bg-info rounded-md w-full text-left border-2 border-transparent"
+                @click="selectBannerType('The Myth at Her Fingertips')">
+                {{ $t('nautika') }}
+              </button>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
@@ -767,70 +800,81 @@ const selectBannerType = (bannerType: string) => {
       :pulls="limitedPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="From the Ruin of the Past" />
+    <!-- TODO: pass in the actual latest Limited Banner -->
     <TrackerBoard
       v-if="selectedBannerType === 'Standard'"
       :text="$t('summary-standard')"
       :pulls="standardPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Amongst the Lake" />
     <TrackerBoard
       v-if="selectedBannerType === 'Invitation From the Water'"
       :text="$t('summary-thread')"
       :pulls="threadPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Invitation From the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Abundance of the Water'"
       :text="$t('summary-abundance')"
       :pulls="abundancePulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Abundance of the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Yearning of the Water'"
       :text="$t('summary-yearning')"
       :pulls="yearningPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Yearning of the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Revelation of the Water'"
       :text="$t('summary-revelation')"
       :pulls="revelationPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Revelation of the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Promise of the Water'"
       :text="$t('summary-promise')"
       :pulls="promisePulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Promise of the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Boon of the Water'"
       :text="$t('summary-boon')"
       :pulls="boonPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Boon of the Water" />
     <TrackerBoard
       v-if="selectedBannerType === 'Golden Spindle'"
       :text="$t('summary-golden-spindle')"
       :pulls="goldenSpindlePulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Golden Spindle" />
     <TrackerBoard
       v-if="selectedBannerType === 'Ripples on the Water'"
       :text="$t('summary-ripples')"
       :pulls="ripplesPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Ripples on the Water" />
 
     <TrackerBoard
       v-if="selectedBannerType === 'Till the Last Drop'"
@@ -838,35 +882,56 @@ const selectBannerType = (bannerType: string) => {
       :pulls="jiuNiangziPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Till the Last Drop" />
     <TrackerBoard
       v-if="selectedBannerType === 'Thoughts in Cylinder'"
       :text="$t('lucy')"
       :pulls="lucyPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Thoughts in Cylinder" />
     <TrackerBoard
       v-if="selectedBannerType === 'Longing for Innocence'"
       :text="$t('anjo-nala')"
       :pulls="anjoNalaPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Longing for Innocence" />
     <TrackerBoard
       v-if="selectedBannerType === 'Moonbeam Guardian'"
       :text="$t('liang-yue')"
       :pulls="liangPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Moonbeam Guardian" />
     <TrackerBoard
       v-if="selectedBannerType === 'A Prophet Guided by Time'"
       :text="$t('ezio-auditore')"
       :pulls="ezioPulls"
       :allPulls="allPulls"
       :isError="isError"
-      :wrongTimestamps="wrongTimestamps" />
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="A Prophet Guided by Time" />
+    <TrackerBoard
+      v-if="selectedBannerType === 'Wine-Dark Reflections of the Eagle'"
+      :text="$t('kassandra')"
+      :pulls="kassandraPulls"
+      :allPulls="allPulls"
+      :isError="isError"
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="Wine-Dark Reflections of the Eagle" />
+    <TrackerBoard
+      v-if="selectedBannerType === 'The Myth at Her Fingertips'"
+      :text="$t('nautika')"
+      :pulls="nautikaPulls"
+      :allPulls="allPulls"
+      :isError="isError"
+      :wrongTimestamps="wrongTimestamps"
+      banner-type="The Myth at Her Fingertips" />
   </div>
 </template>
 

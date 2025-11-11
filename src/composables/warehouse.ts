@@ -5,8 +5,19 @@ const categoryPriority = {
     'Base Item': 0,
     'Resonate Material': 1,
     'Reveries Material': 2,
-    'Insight Material': 3,
-    'Build Material': 3 // insight/build material have same priority, should be arranged according to rarity
+    'Insight Casket': 3,
+    'Insight Material': 4,
+    'Build Material': 4 // insight/build material have same priority, should be arranged according to rarity
+};
+
+export function setupWarehouse() {
+    if (useWarehouseStore().data.length === 0) {
+        initializeWarehouse();
+    } else {
+        // else statement to be updated for seamless addition of new warehouse items
+        checkWarehouse();
+    }
+    sortWarehouseMaterials(useWarehouseStore().data);
 };
 
 export function addEventShopMaterialsToWarehouse(version: string) {
@@ -37,7 +48,7 @@ export function removeEventShopMaterialsFromWarehouse(version: string) {
     }
 }
 
-export const initializeWarehouse = () => {
+const initializeWarehouse = () => {
     // NOTE: keep these sample codes for future reference with new materials
     // const unreleasedDropsEnabled = usePlannerSettingsStore().settings.enabledUnreleasedStages_v1_9;
     console.log('Initialize warehouse');
@@ -57,6 +68,7 @@ function isValidWarehouseItem(item) {
         item.Category === 'Build Material' ||
         item.Category === 'Insight Material' ||
         item.Category === 'Reveries Material' ||
+        item.Category === 'Insight Casket' ||
         (item.Category === 'Resonate Material' && item.Rarity < 6) ||
         item.Name === 'Dust' ||
         item.Name === 'Sharpodonty' ||
@@ -66,7 +78,7 @@ function isValidWarehouseItem(item) {
     return false;
 }
 
-export function checkWarehouse() {
+function checkWarehouse() {
     useDataStore().items.forEach((item) => {
         // NOTE: keep these sample codes for future reference with new materials
         // const unreleasedDropsEnabled = usePlannerSettingsStore().settings.enabledUnreleasedStages_v1_9;
@@ -86,7 +98,7 @@ export function checkWarehouse() {
     });
 }
 
-export const sortWarehouseMaterials = (array: IWarehouseItem[]) => {
+const sortWarehouseMaterials = (array: IWarehouseItem[]) => {
     const itemsData = useDataStore().items;
 
     array.sort((warehouseMatlA, warehouseMatlB) => {
@@ -113,3 +125,28 @@ export const sortWarehouseMaterials = (array: IWarehouseItem[]) => {
         }
     });
 };
+
+/**
+ * If initializeWarehouse was called extra times, the new copies will have 0 quantity.
+ * But if duplicates exist and one is edited, all will be updated.
+ * So we use max to combine them.
+ */
+export function removeDuplicateWarehouseItems () {
+    const warehouseStore = useWarehouseStore();
+    const items = warehouseStore.data;
+    const seen = new Map();
+
+    warehouseStore.data = items.reduce((acc, item) => {
+        const materialName = item.Material;
+        if (seen.has(materialName)) {
+            // If we've seen this material, update its quantity
+            const existingItem = seen.get(materialName);
+            existingItem.Quantity = Math.max(existingItem.Quantity || 0, item.Quantity || 0);
+        } else {
+            // If it's the first time we see this material, add it to our map and accumulator
+            seen.set(materialName, item);
+            acc.push(item);
+        }
+        return acc;
+    }, [] as IWarehouseItem[]);
+}
